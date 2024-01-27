@@ -81,7 +81,8 @@ const handleNoteSave = async () => {
   };
 
   await saveNote(newNote); // Wait for the save operation to complete
-
+  await getNotes()
+  
   // After saving, get and render notes
   await getAndRenderNotes();
   renderActiveNote();
@@ -189,10 +190,9 @@ const renderNoteList = async (notes) => {
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
 if (window.location.pathname === '/notes') {
-  getAndRenderNotes();
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   clearBtn.addEventListener('click', renderActiveNote);
   noteForm.addEventListener('input', handleRenderBtns);
-  getAndRenderNotes();
+  getAndRenderNotes(); console.log(getAndRenderNotes());
 }

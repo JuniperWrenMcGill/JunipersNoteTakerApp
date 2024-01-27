@@ -36,15 +36,11 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
   newNote.id = uuidv4(); // Use uuidv4 to generate unique ID
-  let notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
+  JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
   notes.push(newNote);
   fs.writeFileSync(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes));
-
-  // // Fetch and send the updated list of notes
-  // const updatedNotes = getNotes();
-  // res.json(updatedNotes);
-});
-
+  res.json(notes);
+});  
 
 app.delete('/api/notes/:id', (req, res) => {
   const { id } = req.params;
