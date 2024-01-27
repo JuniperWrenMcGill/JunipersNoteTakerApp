@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const notes = require('./db/db.json');
-
 const PORT = process.env.PORT || 3002;
 
 const app = express();
@@ -30,7 +29,6 @@ app.get('/notes', (req, res) =>
 
 // api paths
 app.get('/api/notes', (req, res) => {
-  console.log('high');
   // const notes = JSON.parse(fs.readFileSync('db.json', 'utf8'));
   res.json(notes);
 });
@@ -38,19 +36,24 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   const newNote = req.body;
   newNote.id = uuidv4(); // Use uuidv4 to generate unique ID
-  const notes = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
+  let notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
   notes.push(newNote);
-  fs.writeFileSync('db.json', JSON.stringify(notes));
-  res.json(newNote);
+  fs.writeFileSync(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes));
+
+  // // Fetch and send the updated list of notes
+  // const updatedNotes = getNotes();
+  // res.json(updatedNotes);
 });
+
 
 app.delete('/api/notes/:id', (req, res) => {
   const { id } = req.params;
-  let notes = JSON.parse(fs.readFileSync('db.json', 'utf8'));
+  let notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
   notes = notes.filter(note => note.id !== id);
-  fs.writeFileSync('db.json', JSON.stringify(notes));
+  fs.writeFileSync(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes));
   res.json({ success: true });
 });
+
 
 // Start the server
 app.listen(PORT, () =>
