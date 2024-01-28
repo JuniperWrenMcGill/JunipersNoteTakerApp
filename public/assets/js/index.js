@@ -4,7 +4,7 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-
+let clearBtn;
 
 if (window.location.pathname === '/notes') {
   noteForm = document.querySelector('.note-form');
@@ -15,6 +15,12 @@ if (window.location.pathname === '/notes') {
   clearBtn = document.querySelector('.clear-btn');
   noteList = document.querySelectorAll('.list-container .list-group');
 
+  //   // Event delegation for delete button clicks
+  //   document.getElementById('list-group').addEventListener('click', async (e) => {
+  //     if (e.target.classList.contains('delete-note')) {
+  //       handleNoteDelete(e);
+  //     }
+  //  });
 }
 
 // Show an element
@@ -89,21 +95,29 @@ const handleNoteSave = async () => {
 };
 
 // Delete the clicked note
-const handleNoteDelete = (e) => {
-  // Prevents the click listener for the list from being called when the button inside of it is clicked
+const handleNoteDelete = async (e) => {
   e.stopPropagation();
 
-  const note = e.target;
-  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+  const note = e.target.parentElement;
+  const noteData = note.dataset.note ? JSON.parse(note.dataset.note) : null;
+  const noteId = noteData ? noteData.id : null;
+  console.log('Deleting note with ID:', noteId)
 
   if (activeNote.id === noteId) {
     activeNote = {};
   }
 
-  deleteNote(noteId).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  try {
+    await deleteNote(noteId);
+    // After deleting, get and render notes
+    console.log('Note deleted successfully');
+    await getNotes()
+    await getAndRenderNotes();
+     renderActiveNote();
+  } catch (error) {
+    console.error("Error deleting note:", error);
+  }
+  
 };
 
 // Sets the activeNote and displays it
@@ -194,5 +208,5 @@ if (window.location.pathname === '/notes') {
   newNoteBtn.addEventListener('click', handleNewNoteView);
   clearBtn.addEventListener('click', renderActiveNote);
   noteForm.addEventListener('input', handleRenderBtns);
-  getAndRenderNotes(); console.log(getAndRenderNotes());
+  getAndRenderNotes(); 
 }

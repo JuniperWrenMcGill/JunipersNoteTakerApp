@@ -1,1 +1,6 @@
-[{"title":"Test Title","text":"Test text"},{"title":"Take out the trash","text":"Take out the trash","id":"2bfcce61-a024-4f57-adb7-c8ac583f3f67"}]
+[
+    {
+        "title": "Test Title",
+        "text": "Test text"
+    }
+]

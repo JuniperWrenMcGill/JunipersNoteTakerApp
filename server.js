@@ -44,10 +44,20 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
   const { id } = req.params;
-  let notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
-  notes = notes.filter(note => note.id !== id);
-  fs.writeFileSync(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes));
-  res.json({ success: true });
+  console.log('Received DELETE request for note with ID:', id);
+
+  try {
+    let notes = JSON.parse(fs.readFileSync(path.join(__dirname, 'db', 'db.json'), 'utf8'));
+    console.log('Notes before deletion:', notes);
+    notes = notes.filter(note => String(note.id) !== String(id)); 
+    console.log('Notes after deletion:', notes);
+    fs.writeFileSync(path.join(__dirname, 'db', 'db.json'), JSON.stringify(notes));
+    console.log('Note deleted successfully');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting note:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
 });
 
 
