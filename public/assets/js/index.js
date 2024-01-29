@@ -111,9 +111,9 @@ const handleNoteDelete = async (e) => {
     await deleteNote(noteId);
     // After deleting, get and render notes
     console.log('Note deleted successfully');
-    await getNotes()
     await getAndRenderNotes();
      renderActiveNote();
+     console.log('After getAndRenderNotes');
   } catch (error) {
     console.error("Error deleting note:", error);
   }
