@@ -15,7 +15,7 @@ The Note Taker App is a simple web application that allows users to create,  and
 
 ## Installation & Usage
 
-You can explore this application at this link [Application Link](https://your-application-url.com).
+You can explore this application at this link [Application Link](https://junipersnotetakerapp-96a8bf8c4cbf.herokuapp.com/notes).
 
 # Contributions
 This application contains starter code provided by UNCC
